@@ -6,9 +6,8 @@ function Squire({ value, onSquireClick }) {
   return <button onClick={onSquireClick} className='bg-white border border-gray-400 h-12 w-12 m-1 leading-9 text-lg'>{value}</button>
 }
 
-const Board = () => {
-  const [sqr, setSqr] = useState(Array(9).fill(null));
-  const [nextX, setNextX] = useState(true)
+const Board = ({ nextX, sqr, onplay }) => {
+
   const winner = CalculateWinner(sqr);
   let status;
   if (winner) {
@@ -18,15 +17,14 @@ const Board = () => {
   }
 
   const onSquireClick = (i) => {
-    if (sqr[i]||winner) { return }
+    if (sqr[i] || winner) { return }
     const nextSqr = sqr.slice()
     nextX ? nextSqr[i] = "X" : nextSqr[i] = "O";
-    setSqr(nextSqr)
-    setNextX(!nextX)
+    onplay(nextSqr);
   }
   return (
     <>
-    <div>{status}</div>
+      <div>{status}</div>
       <div className='flex'>
         <Squire onSquireClick={() => onSquireClick(0)} value={sqr[0]} />
         <Squire onSquireClick={() => onSquireClick(1)} value={sqr[1]} />
@@ -47,8 +45,6 @@ const Board = () => {
   );
 };
 
-export default Board;
-
 function CalculateWinner(sqr) {
   const lines = [
     [0, 1, 2],
@@ -68,3 +64,38 @@ function CalculateWinner(sqr) {
   }
   return null;
 }
+
+const Game = () => {
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [nextX, setNextX] = useState(true);
+
+  const currentMove = history[history.length - 1];
+  function handlePlay(nextSqr) {
+    setNextX(!nextX);
+    setHistory([...history, nextSqr]);
+  }
+  return (
+    <>
+      <div>
+        <Board
+          nextX={nextX}
+          sqr={currentMove}
+          onplay={handlePlay} />
+      </div>
+      <div>
+        <ol>
+          {history.map((sqr, move) => {
+            const description = move > 0 ? "Go to move #" + move : "Go to game start";
+            return (
+              <li key={move}>
+                <button onClick={() => setHistory(history.slice(0, move + 1))}>{description}</button>
+              </li>
+            )
+          })}
+        </ol>
+      </div>
+    </>
+  );
+};
+
+export default Game;
