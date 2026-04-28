@@ -76,23 +76,27 @@ const Game = () => {
   }
   return (
     <>
-      <div>
-        <Board
-          nextX={nextX}
-          sqr={currentMove}
-          onplay={handlePlay} />
-      </div>
-      <div>
-        <ol>
-          {history.map((sqr, move) => {
-            const description = move > 0 ? "Go to move #" + move : "Go to game start";
-            return (
-              <li key={move}>
-                <button onClick={() => setHistory(history.slice(0, move + 1))}>{description}</button>
-              </li>
-            )
-          })}
-        </ol>
+      <div className='flex  w-full h-screen justify-center items-center gap-10 flex-row max-sm:flex-col'>
+        <div>
+          <Board
+            nextX={nextX}
+            sqr={currentMove}
+            onplay={handlePlay} />
+        </div>
+        <div className='list-decimal text-left cursor-pointer bg-gray-400 p-4 rounded-md '>
+          <ol classname='space-y-2 '>
+            {history.map((sqr, move) => {
+              const description = move > 0 ? "Go to move #" + move : "Go to game start";
+              return (
+                <li
+                className='bg-gray-300 mt-1 px-4 rounded-md hover:bg-gray-500' 
+                key={move}>
+                  <button onClick={() => setHistory(history.slice(0, move + 1))}>{description}</button>
+                </li>
+              )
+            })}
+          </ol>
+        </div>
       </div>
     </>
   );
