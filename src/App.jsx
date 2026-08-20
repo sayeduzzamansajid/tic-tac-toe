@@ -89,8 +89,8 @@ const Game = () => {
               const description = move > 0 ? "Go to move #" + move : "Go to game start";
               return (
                 <li
-                className='bg-gray-300 mt-1 px-4 rounded-md hover:bg-gray-500' 
-                key={move}>
+                  className='bg-gray-300 mt-1 px-4 rounded-md hover:bg-gray-500'
+                  key={move}>
                   <button onClick={() => setHistory(history.slice(0, move + 1))}>{description}</button>
                 </li>
               )
